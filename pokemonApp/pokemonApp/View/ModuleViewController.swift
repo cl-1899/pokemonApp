@@ -10,7 +10,6 @@ import UIKit
 class ModuleViewController: UIViewController, ModulePresenterOutputProtocol {
     var presenter: ModulePresenterInputProtocol!
     
-    private var isLoading = false
     private var tableView: UITableView!
     private var pokemonList: [Pokemon] = []
     
@@ -31,12 +30,17 @@ class ModuleViewController: UIViewController, ModulePresenterOutputProtocol {
     func displayPokemonList(_ pokemonList: [Pokemon]) {
         self.pokemonList = pokemonList
         tableView.reloadData()
-        isLoading = false
     }
     
     func showError() {
-        <#code#>
+        DispatchQueue.main.async { [weak self] in
+            let alertController = UIAlertController(title: "Error", message: "An Error occured while loading data.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            self?.present(alertController, animated: true, completion: nil)
+        }
     }
+    //    TODO:
 }
 
 extension ModuleViewController: UITableViewDataSource, UITableViewDelegate {
@@ -52,6 +56,8 @@ extension ModuleViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
+        let selectedPokemon = pokemonList[indexPath.row]
+        let id = selectedPokemon.id
+        presenter.didSelectPokemon(withID: id)
     }
 }

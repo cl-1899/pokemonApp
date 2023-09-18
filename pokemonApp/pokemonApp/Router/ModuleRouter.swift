@@ -8,13 +8,18 @@
 import UIKit
 
 protocol ModuleRouterInputProtocol {
-    func navigateToPokemonDetails(withURL url: URL)
+    func navigateToPokemonDetails(withID id: Int)
 }
 
 class ModuleRouter: ModuleRouterInputProtocol {
-    func navigateToPokemonDetails(withURL url: URL) {
-        <#code#>
-    }
-    
     weak var viewController: UIViewController?
+    
+    func navigateToPokemonDetails(withID id: Int) {
+        let pokemonModuleViewController = PokemonModuleViewController()
+        let presenter = PokemonModulePresenter(pokemonId: id)
+        pokemonModuleViewController.presenter = presenter
+        presenter.view = pokemonModuleViewController
+        
+        viewController?.navigationController?.pushViewController(pokemonModuleViewController, animated: true)
+    }
 }

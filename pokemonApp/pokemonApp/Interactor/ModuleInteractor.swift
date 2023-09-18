@@ -21,7 +21,6 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     
     private var pokemonList: [Pokemon] = []
     private var nextURL: URL?
-    private let pokemonsURL = "https://pokeapi.co/api/v2/pokemon"
     
     func fetchPokemonList() {
         guard let url = nextURL ?? URL(string: pokemonsURL) else {
@@ -40,7 +39,7 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
                 self?.nextURL = response.next
                 
                 let newPokemonList = response.results.map { result in
-                    return Pokemon(name: result.name, url: result.url)
+                    return Pokemon(name: result.name, id: result.id, url: result.url)
                 }
                 
                 self?.pokemonList.append(contentsOf: newPokemonList)
@@ -50,14 +49,4 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
             }
         }.resume()
     }
-}
-
-struct PokemonListResponse: Codable {
-    let results: [PokemonResult]
-    let next: URL?
-}
-
-struct PokemonResult: Codable {
-    let name: String
-    let url: URL
 }
