@@ -55,35 +55,37 @@ class PokemonModuleViewController: UIViewController, PokemonModulePresenterOutpu
     }
     
     func displayPokemonDetails(_ pokemonDetails: PokemonDetails) {
-        self.nameLabel.text = pokemonDetails.name
-        
-        DispatchQueue.global().async { [weak self] in
-            if let imageURL = URL(string: pokemonDetails.imageURL.absoluteString),
-               let imageData = try? Data(contentsOf: imageURL),
-               let image = UIImage(data: imageData) {
-                DispatchQueue.main.async {
-                    self?.imageView.image = image
-                }
+        if let pokemonURL = pokemonDetails.imageURL,
+           let imageURL = URL(string: pokemonURL),
+           let imageData = try? Data(contentsOf: imageURL),
+           let image = UIImage(data: imageData) {
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.imageView.image = image
             }
         }
         
+        DispatchQueue.main.async { [weak self] in
+            self?.nameLabel.text = pokemonDetails.name
+        }
+        
         let typesText = pokemonDetails.types.joined(separator: ", ")
-        self.typesLabel.text = "Types: \(typesText)"
+        DispatchQueue.main.async { [weak self] in
+            self?.typesLabel.text = "Types: \(typesText)"
+        }
         
         let weightText = String(format: "Weight: %.1f kg", pokemonDetails.weight)
-        weightLabel.text = weightText
+        DispatchQueue.main.async { [weak self] in
+            self?.weightLabel.text = weightText
+        }
         
         let heightText = String(format: "Height: %.1f cm", pokemonDetails.height)
-        heightLabel.text = heightText
+        DispatchQueue.main.async { [weak self] in
+            self?.heightLabel.text = heightText
+        }
     }
     
     func showError() {
-        DispatchQueue.main.async { [weak self] in
-            let alertController = UIAlertController(title: "Error", message: "An Error occured while loading data.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            self?.present(alertController, animated: true, completion: nil)
-        }
+        AlertManager.showAlert(alertType: .loadDataError, on: self)
     }
-    //    TODO:
 }

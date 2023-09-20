@@ -23,24 +23,21 @@ class ModuleViewController: UIViewController, ModulePresenterOutputProtocol {
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableView.self, forCellReuseIdentifier: "PokemonCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PokemonCell")
         view.addSubview(tableView)
     }
     
     func displayPokemonList(_ pokemonList: [Pokemon]) {
         self.pokemonList = pokemonList
-        tableView.reloadData()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     func showError() {
-        DispatchQueue.main.async { [weak self] in
-            let alertController = UIAlertController(title: "Error", message: "An Error occured while loading data.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            self?.present(alertController, animated: true, completion: nil)
-        }
+        AlertManager.showAlert(alertType: .loadDataError, on: self)
     }
-    //    TODO:
 }
 
 extension ModuleViewController: UITableViewDataSource, UITableViewDelegate {
@@ -56,8 +53,8 @@ extension ModuleViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPokemon = pokemonList[indexPath.row]
+        var selectedPokemon = pokemonList[indexPath.row]
         let id = selectedPokemon.id
-        presenter.didSelectPokemon(withID: id)
+        presenter.didSelectPokemon(withID: id, from: self)
     }
 }

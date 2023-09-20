@@ -8,6 +8,10 @@
 import Foundation
 
 protocol PokemonModulePresenterInputProtocol {
+    var view: PokemonModulePresenterOutputProtocol? { get set }
+    var interactor: PokemonModuleInteractorInputProtocol! { get set }
+    var router: PokemonModuleRouterInputProtocol! { get set }
+    
     func viewDidLoad()
     func backButtonPressed()
 }
@@ -19,8 +23,8 @@ protocol PokemonModulePresenterOutputProtocol: AnyObject {
 
 class PokemonModulePresenter: PokemonModulePresenterInputProtocol, PokemonModuleInteractorOutputProtocol {
     weak var view: PokemonModulePresenterOutputProtocol?
-    var interactor: PokemonModuleInteractorInputProtocol?
-    var router: PokemonModuleRouterInputProtocol?
+    var interactor: PokemonModuleInteractorInputProtocol!
+    var router: PokemonModuleRouterInputProtocol!
     
     private var pokemonId: Int?
     
@@ -30,21 +34,21 @@ class PokemonModulePresenter: PokemonModulePresenterInputProtocol, PokemonModule
     
     func viewDidLoad() {
         guard let pokemonId else {
-            view?.showError()
+            self.view?.showError()
             return
         }
-        interactor?.fetchPokemonDetails(with: pokemonId)
+        interactor.fetchPokemonDetails(with: pokemonId)
     }
     
     func backButtonPressed() {
-        router?.navigateBack()
+        router.navigateBack()
     }
     
     func didFetchPokemonDetails(_ pokemonDetails: PokemonDetails) {
-        view?.displayPokemonDetails(pokemonDetails)
+        self.view?.displayPokemonDetails(pokemonDetails)
     }
     
     func onError() {
-        view?.showError()
+        self.view?.showError()
     }
 }

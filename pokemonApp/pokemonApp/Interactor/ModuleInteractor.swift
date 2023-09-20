@@ -8,6 +8,8 @@
 import Foundation
 
 protocol ModuleInteractorInputProtocol {
+    var presenter: ModuleInteractorOutputProtocol! { get set }
+    
     func fetchPokemonList()
 }
 
@@ -23,30 +25,41 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     private var nextURL: URL?
     
     func fetchPokemonList() {
+        DispatchQueue.main.async { [weak self] in
+            self?.fetch()
+        }
+    }
+    
+    private let pokemonsURL = ApiManager.pokemonsURL
+    
+    private func fetch() {
         guard let url = nextURL ?? URL(string: pokemonsURL) else {
             presenter.onError()
             return
         }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let data, error == nil else {
+        ApiClient.fetchData(with: url) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.handleSuccessResponse(data: data)
+            case .failure(_):
                 self?.presenter.onError()
-                return
+            }
+        }
+    }
+    
+    private func handleSuccessResponse(data: Data) {
+        do {
+            let response = try JSONDecoder().decode(PokemonListResponse.self, from: data)
+            self.nextURL = response.next
+            
+            let newPokemonList = response.results.map { result in
+                return Pokemon(name: result.name, url: result.url)
             }
             
-            do {
-                let response = try JSONDecoder().decode(PokemonListResponse.self, from: data)
-                self?.nextURL = response.next
-                
-                let newPokemonList = response.results.map { result in
-                    return Pokemon(name: result.name, id: result.id, url: result.url)
-                }
-                
-                self?.pokemonList.append(contentsOf: newPokemonList)
-                self?.presenter.didFetchPokemonList(self?.pokemonList ?? [])
-            } catch {
-                self?.presenter.onError()
-            }
-        }.resume()
+            self.pokemonList.append(contentsOf: newPokemonList)
+            self.presenter.didFetchPokemonList(self.pokemonList)
+        } catch {
+            self.presenter.onError()
+        }
     }
 }

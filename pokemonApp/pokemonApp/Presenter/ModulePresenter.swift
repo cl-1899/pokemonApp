@@ -8,9 +8,13 @@
 import Foundation
 
 protocol ModulePresenterInputProtocol {
+    var view: ModulePresenterOutputProtocol? { get set }
+    var interactor: ModuleInteractorInputProtocol! { get set }
+    var router: ModuleRouterInputProtocol! { get set }
+    
     func viewDidLoad()
     func loadNextPage()
-    func didSelectPokemon(withID id: Int)
+    func didSelectPokemon(withID id: Int, from view: ModulePresenterOutputProtocol?)
 }
 
 protocol ModulePresenterOutputProtocol: AnyObject {
@@ -34,16 +38,16 @@ class ModulePresenter: ModulePresenterInputProtocol, ModuleInteractorOutputProto
         interactor.fetchPokemonList()
     }
     
-    func didSelectPokemon(withID id: Int) {
-        router.navigateToPokemonDetails(withID: id)
+    func didSelectPokemon(withID id: Int, from view: ModulePresenterOutputProtocol?) {
+        router?.navigateToPokemonDetails(withID: id, from: view)
     }
     
     func didFetchPokemonList(_ pokemonList: [Pokemon]) {
         self.pokemonList = pokemonList
-        view?.displayPokemonList(pokemonList)
+        self.view?.displayPokemonList(pokemonList)
     }
     
     func onError() {
-        view?.showError()
+        self.view?.showError()
     }
 }

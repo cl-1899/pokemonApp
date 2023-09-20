@@ -8,18 +8,41 @@
 import UIKit
 
 protocol ModuleRouterInputProtocol {
-    func navigateToPokemonDetails(withID id: Int)
+    func navigateToPokemonDetails(withID id: Int, from view: ModulePresenterOutputProtocol?)
 }
 
 class ModuleRouter: ModuleRouterInputProtocol {
     weak var viewController: UIViewController?
     
-    func navigateToPokemonDetails(withID id: Int) {
+    init(viewController: UIViewController) {
+        self.viewController = viewController
+    }
+    
+    static func createModule() -> UINavigationController {
+        
+        let viewController = ModuleViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        
+        let presenter: ModulePresenterInputProtocol & ModuleInteractorOutputProtocol = ModulePresenter()
+        
+        viewController.presenter = presenter
+        viewController.presenter.router = ModuleRouter(viewController: viewController)
+        viewController.presenter.view = viewController
+        viewController.presenter.interactor = ModuleInteractor()
+        viewController.presenter.interactor.presenter = presenter
+        
+        return navigationController
+    }
+    
+    func navigateToPokemonDetails(withID id: Int, from view: ModulePresenterOutputProtocol?) {
         let pokemonModuleViewController = PokemonModuleViewController()
         let presenter = PokemonModulePresenter(pokemonId: id)
-        pokemonModuleViewController.presenter = presenter
         presenter.view = pokemonModuleViewController
+        presenter.interactor = PokemonModuleInteractor()
+        presenter.interactor.presenter = presenter
+        presenter.router = PokemonModuleRouter()
+        pokemonModuleViewController.presenter = presenter
         
-        viewController?.navigationController?.pushViewController(pokemonModuleViewController, animated: true)
+        self.viewController?.navigationController?.pushViewController(pokemonModuleViewController, animated: true)
     }
 }
