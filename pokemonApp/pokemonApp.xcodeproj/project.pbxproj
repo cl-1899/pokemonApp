@@ -18,7 +18,6 @@
 		3B0497DE2AB83AAF005EC6F0 /* ModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497DD2AB83AAF005EC6F0 /* ModuleViewController.swift */; };
 		3B0497E02AB87561005EC6F0 /* PokemonModuleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497DF2AB87561005EC6F0 /* PokemonModuleInteractor.swift */; };
 		3B0497E22AB880D3005EC6F0 /* PokemonModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497E12AB880D3005EC6F0 /* PokemonModulePresenter.swift */; };
-		3B0497E42AB88334005EC6F0 /* PokemonModuleRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497E32AB88334005EC6F0 /* PokemonModuleRouter.swift */; };
 		3B0497E62AB883E1005EC6F0 /* PokemonModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497E52AB883E1005EC6F0 /* PokemonModuleViewController.swift */; };
 		3B0497EB2AB9E9A3005EC6F0 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497EA2AB9E9A3005EC6F0 /* ApiClient.swift */; };
 		3B0497ED2AB9EAE1005EC6F0 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497EC2AB9EAE1005EC6F0 /* ApiManager.swift */; };
@@ -50,7 +49,6 @@
 		3B0497DD2AB83AAF005EC6F0 /* ModuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleViewController.swift; sourceTree = "<group>"; };
 		3B0497DF2AB87561005EC6F0 /* PokemonModuleInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonModuleInteractor.swift; sourceTree = "<group>"; };
 		3B0497E12AB880D3005EC6F0 /* PokemonModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonModulePresenter.swift; sourceTree = "<group>"; };
-		3B0497E32AB88334005EC6F0 /* PokemonModuleRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonModuleRouter.swift; sourceTree = "<group>"; };
 		3B0497E52AB883E1005EC6F0 /* PokemonModuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonModuleViewController.swift; sourceTree = "<group>"; };
 		3B0497EA2AB9E9A3005EC6F0 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		3B0497EC2AB9EAE1005EC6F0 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				3B0497DB2AB7859C005EC6F0 /* ModuleRouter.swift */,
-				3B0497E32AB88334005EC6F0 /* PokemonModuleRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -285,7 +282,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B0497E42AB88334005EC6F0 /* PokemonModuleRouter.swift in Sources */,
 				3B0497D62AB783F4005EC6F0 /* ModulePresenter.swift in Sources */,
 				3B0497D22AB76B93005EC6F0 /* ModuleInteractor.swift in Sources */,
 				3B0497E62AB883E1005EC6F0 /* PokemonModuleViewController.swift in Sources */,

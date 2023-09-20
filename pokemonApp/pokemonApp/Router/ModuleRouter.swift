@@ -40,7 +40,6 @@ class ModuleRouter: ModuleRouterInputProtocol {
         presenter.view = pokemonModuleViewController
         presenter.interactor = PokemonModuleInteractor()
         presenter.interactor.presenter = presenter
-        presenter.router = PokemonModuleRouter()
         pokemonModuleViewController.presenter = presenter
         
         self.viewController?.navigationController?.pushViewController(pokemonModuleViewController, animated: true)
