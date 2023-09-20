@@ -33,24 +33,22 @@ struct PokemonDetails: Codable {
     let name: String
     let imageURL: String?
     let types: [String]
-    let weight: Int
-    let height: Int
+    let weight: Double
+    let height: Double
 }
 
 struct PokemonDetailsResponse: Codable {
     let name: String
-    let weight: Int
-    let height: Int
-    let types: [Types]
     let sprites: Sprite
+    let types: [Types]
+    let weight: Double
+    let height: Double
 }
 
 struct Types: Codable {
-    let slot: Int
     let pokemonType: PokemonType
     
     enum CodingKeys: String, CodingKey {
-        case slot
         case pokemonType = "type"
     }
 }
