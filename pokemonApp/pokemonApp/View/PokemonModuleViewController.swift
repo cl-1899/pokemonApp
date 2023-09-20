@@ -24,6 +24,7 @@ class PokemonModuleViewController: UIViewController, PokemonModulePresenterOutpu
     }
     
     private func setupUI() {
+        view.backgroundColor = .white
         view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
