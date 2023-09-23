@@ -19,7 +19,7 @@ protocol ModulePresenterInputProtocol {
 
 protocol ModulePresenterOutputProtocol: AnyObject {
     func displayPokemonList(_ pokemonList: [Pokemon])
-    func showError()
+    func showError(_ alertType: AlertType)
 }
 
 class ModulePresenter: ModulePresenterInputProtocol, ModuleInteractorOutputProtocol {
@@ -47,7 +47,7 @@ class ModulePresenter: ModulePresenterInputProtocol, ModuleInteractorOutputProto
         self.view?.displayPokemonList(pokemonList)
     }
     
-    func onError() {
-        self.view?.showError()
+    func onError(_ alertType: AlertType) {
+        self.view?.showError(alertType)
     }
 }

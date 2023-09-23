@@ -8,7 +8,7 @@
 import UIKit
 
 class AlertManager {
-    static func showAlert(alertType: AlertType,  on vc: UIViewController) {
+    static func showAlert(_ alertType: AlertType,  on vc: UIViewController) {
         DispatchQueue.main.async {
             let alertController = UIAlertController.getAlert(by: alertType)
             vc.present(alertController, animated: true)
@@ -18,18 +18,23 @@ class AlertManager {
 
 enum AlertType {
     case loadDataError
+    case noNetwork
     
     var title: String {
         switch self {
         case .loadDataError:
-            return "An Error occured while loading data."
+            return "Error"
+        case .noNetwork:
+            return "Error"
         }
     }
     
     var message: String {
         switch self {
         case .loadDataError:
-            return "Error"
+            return "An Error occured while loading data."
+        case .noNetwork:
+            return "No network connection."
         }
     }
 }

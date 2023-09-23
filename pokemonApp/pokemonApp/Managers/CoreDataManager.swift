@@ -8,7 +8,10 @@
 import Foundation
 import CoreData
 
-class CoreDataManager {
+public final class CoreDataManager: NSObject {
+    public static let shared = CoreDataManager()
+    private override init() {}
+    
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "PokemonDataModel")
         container.loadPersistentStores { (_, error) in
@@ -121,5 +124,39 @@ class CoreDataManager {
         
         return nil
     }
-
+    
+    func deletePokemonData() {
+        let context = persistentContainer.viewContext
+        
+        let fetchRequest: NSFetchRequest<PokemonEntityData> = PokemonEntityData.fetchRequest()
+        
+        do {
+            let existingPokemonEntities = try context.fetch(fetchRequest)
+            for entity in existingPokemonEntities {
+                context.delete(entity)
+            }
+            
+            try context.save()
+        } catch {
+            print("Error removing data from CoreData: \(error)")
+        }
+    }
+    
+    func deleteAllPokemonDetails() {
+        let context = persistentContainer.viewContext
+        
+        let fetchRequest: NSFetchRequest<PokemonDetailsEntityData> = PokemonDetailsEntityData.fetchRequest()
+        
+        do {
+            let allDetailsEntities = try context.fetch(fetchRequest)
+            
+            for entity in allDetailsEntities {
+                context.delete(entity)
+            }
+            
+            try context.save()
+        } catch {
+            print("Error removing data from CoreData: \(error)")
+        }
+    }
 }

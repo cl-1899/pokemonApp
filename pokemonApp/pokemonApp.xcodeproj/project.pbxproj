@@ -21,6 +21,7 @@
 		3B0497E62AB883E1005EC6F0 /* PokemonModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497E52AB883E1005EC6F0 /* PokemonModuleViewController.swift */; };
 		3B0497EB2AB9E9A3005EC6F0 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497EA2AB9E9A3005EC6F0 /* ApiClient.swift */; };
 		3B0497ED2AB9EAE1005EC6F0 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497EC2AB9EAE1005EC6F0 /* ApiManager.swift */; };
+		3B1B88F02ABF6AAC00FEA7BE /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 3B1B88EF2ABF6AAC00FEA7BE /* Reachability */; };
 		3BEDA0242ABA381C00DF1F7A /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEDA0232ABA381C00DF1F7A /* AlertManager.swift */; };
 		3BEDA02C2ABA5F2C00DF1F7A /* pokemonAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEDA02B2ABA5F2C00DF1F7A /* pokemonAppTests.swift */; };
 		3BEDA0452ABF114E00DF1F7A /* PokemonDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3BEDA0432ABF114E00DF1F7A /* PokemonDataModel.xcdatamodeld */; };
@@ -68,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B1B88F02ABF6AAC00FEA7BE /* Reachability in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +206,9 @@
 			dependencies = (
 			);
 			name = pokemonApp;
+			packageProductDependencies = (
+				3B1B88EF2ABF6AAC00FEA7BE /* Reachability */,
+			);
 			productName = pokemonApp;
 			productReference = 3B0497B22AB70722005EC6F0 /* pokemonApp.app */;
 			productType = "com.apple.product-type.application";
@@ -255,6 +260,7 @@
 			);
 			mainGroup = 3B0497A92AB70722005EC6F0;
 			packageReferences = (
+				3B1B88EE2ABF6AAC00FEA7BE /* XCRemoteSwiftPackageReference "Reachability" */,
 			);
 			productRefGroup = 3B0497B32AB70722005EC6F0 /* Products */;
 			projectDirPath = "";
@@ -575,6 +581,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3B1B88EE2ABF6AAC00FEA7BE /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3B1B88EF2ABF6AAC00FEA7BE /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B1B88EE2ABF6AAC00FEA7BE /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3BEDA0432ABF114E00DF1F7A /* PokemonDataModel.xcdatamodeld */ = {

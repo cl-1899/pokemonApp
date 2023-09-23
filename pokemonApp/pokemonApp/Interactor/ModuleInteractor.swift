@@ -6,16 +6,16 @@
 //
 
 import Foundation
+import Reachability
 
 protocol ModuleInteractorInputProtocol {
     var presenter: ModuleInteractorOutputProtocol! { get set }
-    
     func fetchPokemonList()
 }
 
 protocol ModuleInteractorOutputProtocol {
     func didFetchPokemonList(_ pokemonList: [Pokemon])
-    func onError()
+    func onError(_ alertType: AlertType)
 }
 
 class ModuleInteractor: ModuleInteractorInputProtocol {
@@ -23,32 +23,40 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     
     private var pokemonList: [Pokemon] = []
     private var nextURL: URL?
-    private let coreDataManager = CoreDataManager()
+    private let coreDataManager = CoreDataManager.shared
+    private let reachability = try! Reachability()
+    private let pokemonsURL = ApiManager.pokemonsURL
     
     func fetchPokemonList() {
         if let cachedData = coreDataManager.fetchPokemonData() {
             self.pokemonList = cachedData
             self.presenter.didFetchPokemonList(pokemonList)
         } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.fetch()
-            }
+            self.fetch()
         }
     }
     
-    private let pokemonsURL = ApiManager.pokemonsURL
-    
     private func fetch() {
-        guard let url = nextURL ?? URL(string: pokemonsURL) else {
-            presenter.onError()
+        guard reachability.connection != .unavailable else {
+            presenter.onError(.noNetwork)
             return
         }
+        
+        guard let url = nextURL ?? URL(string: pokemonsURL) else {
+            presenter.onError(.loadDataError)
+            return
+        }
+        
+        fetchApiClient(with: url)
+    }
+    
+    private func fetchApiClient(with url: URL) {
         ApiClient.fetchData(with: url) { [weak self] result in
             switch result {
             case .success(let data):
                 self?.handleSuccessResponse(data: data)
             case .failure(_):
-                self?.presenter.onError()
+                self?.presenter.onError(.loadDataError)
             }
         }
     }
@@ -70,7 +78,7 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
             
             self.coreDataManager.savePokemonData(newPokemonList)
         } catch {
-            self.presenter.onError()
+            self.presenter.onError(.loadDataError)
         }
     }
     

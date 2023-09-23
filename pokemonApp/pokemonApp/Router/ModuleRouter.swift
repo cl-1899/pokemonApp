@@ -19,7 +19,6 @@ class ModuleRouter: ModuleRouterInputProtocol {
     }
     
     static func createModule() -> UINavigationController {
-        
         let viewController = ModuleViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         

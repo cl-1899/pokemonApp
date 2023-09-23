@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Reachability
 
 protocol PokemonModuleInteractorInputProtocol {
     var presenter: PokemonModuleInteractorOutputProtocol! { get set }
@@ -14,31 +15,46 @@ protocol PokemonModuleInteractorInputProtocol {
 
 protocol PokemonModuleInteractorOutputProtocol {
     func didFetchPokemonDetails(_ pokemonDetails: PokemonDetails)
-    func onError()
+    func onError(_ alertType: AlertType)
 }
 
 class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
     var presenter: PokemonModuleInteractorOutputProtocol!
     
     private let pokemonsURL = ApiManager.pokemonsURL
-    private let coreDataManager = CoreDataManager()
+    private let coreDataManager = CoreDataManager.shared
+    private let reachability = try! Reachability()
     
     func fetchPokemonDetails(with id: Int16) {
         if let cachedDetails = coreDataManager.fetchPokemonDetails(for: id) {
             self.presenter.didFetchPokemonDetails(cachedDetails)
         } else {
-            let apiURL = "\(pokemonsURL)/\(id)/"
-            guard let url = URL(string: apiURL) else {
-                presenter.onError()
-                return
-            }
-            ApiClient.fetchData(with: url) { [weak self] result in
-                switch result {
-                case .success(let data):
-                    self?.handleSuccessResponse(data: data, id: id)
-                case .failure(_):
-                    self?.presenter.onError()
-                }
+            self.fetch(for: id)
+        }
+    }
+    
+    private func fetch(for id: Int16) {
+        guard reachability.connection != .unavailable else {
+            presenter.onError(.noNetwork)
+            return
+        }
+        
+        let apiURL = "\(pokemonsURL)/\(id)/"
+        guard let url = URL(string: apiURL) else {
+            presenter.onError(.loadDataError)
+            return
+        }
+        
+        fetchApiClient(with: url, for: id)
+    }
+    
+    private func fetchApiClient(with url: URL, for id: Int16) {
+        ApiClient.fetchData(with: url) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.handleSuccessResponse(data: data, id: id)
+            case .failure(_):
+                self?.presenter.onError(.loadDataError)
             }
         }
     }
@@ -51,7 +67,7 @@ class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
             guard let url = URL(string: imageURL),
                   let imageData = try? Data(contentsOf: url)
             else {
-                self.presenter.onError()
+                self.presenter.onError(.loadDataError)
                 return
             }
             
@@ -75,7 +91,7 @@ class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
             
             coreDataManager.savePokemonDetails(pokemonDetaials, id: id)
         } catch {
-            self.presenter.onError()
+            self.presenter.onError(.loadDataError)
         }
     }
 }

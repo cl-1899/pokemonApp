@@ -66,11 +66,11 @@ class PokemonModuleViewController: UIViewController, PokemonModulePresenterOutpu
                 self?.heightLabel.text = "Height: \(pokemonDetails.height)"
             }
         } else {
-            showError()
+            showError(.loadDataError)
         }
     }
     
-    func showError() {
-        AlertManager.showAlert(alertType: .loadDataError, on: self)
+    func showError(_ alertType: AlertType) {
+        AlertManager.showAlert(alertType, on: self)
     }
 }

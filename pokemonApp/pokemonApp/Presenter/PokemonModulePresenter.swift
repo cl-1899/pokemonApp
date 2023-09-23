@@ -16,7 +16,7 @@ protocol PokemonModulePresenterInputProtocol {
 
 protocol PokemonModulePresenterOutputProtocol: AnyObject {
     func displayPokemonDetails(_ pokemonDetails: PokemonDetails)
-    func showError()
+    func showError(_ alertType: AlertType)
 }
 
 class PokemonModulePresenter: PokemonModulePresenterInputProtocol, PokemonModuleInteractorOutputProtocol {
@@ -31,7 +31,7 @@ class PokemonModulePresenter: PokemonModulePresenterInputProtocol, PokemonModule
     
     func viewDidLoad() {
         guard let pokemonId else {
-            self.view?.showError()
+            self.view?.showError(.loadDataError)
             return
         }
         interactor.fetchPokemonDetails(with: pokemonId)
@@ -41,7 +41,7 @@ class PokemonModulePresenter: PokemonModulePresenterInputProtocol, PokemonModule
         self.view?.displayPokemonDetails(pokemonDetails)
     }
     
-    func onError() {
-        self.view?.showError()
+    func onError(_ alertType: AlertType) {
+        self.view?.showError(alertType)
     }
 }

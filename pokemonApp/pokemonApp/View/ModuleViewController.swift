@@ -36,8 +36,8 @@ class ModuleViewController: UIViewController, ModulePresenterOutputProtocol {
         }
     }
     
-    func showError() {
-        AlertManager.showAlert(alertType: .loadDataError, on: self)
+    func showError(_ alertType: AlertType) {
+        AlertManager.showAlert(alertType, on: self)
     }
 }
 
