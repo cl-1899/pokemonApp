@@ -14,7 +14,7 @@ protocol ModulePresenterInputProtocol {
     
     func viewDidLoad()
     func loadNextPage()
-    func didSelectPokemon(withID id: Int, from view: ModulePresenterOutputProtocol?)
+    func didSelectPokemon(withID id: Int16, from view: ModulePresenterOutputProtocol?)
 }
 
 protocol ModulePresenterOutputProtocol: AnyObject {
@@ -38,7 +38,7 @@ class ModulePresenter: ModulePresenterInputProtocol, ModuleInteractorOutputProto
         interactor.fetchPokemonList()
     }
     
-    func didSelectPokemon(withID id: Int, from view: ModulePresenterOutputProtocol?) {
+    func didSelectPokemon(withID id: Int16, from view: ModulePresenterOutputProtocol?) {
         router?.navigateToPokemonDetails(withID: id, from: view)
     }
     

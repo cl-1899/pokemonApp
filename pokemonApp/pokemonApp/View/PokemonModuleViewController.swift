@@ -56,33 +56,17 @@ class PokemonModuleViewController: UIViewController, PokemonModulePresenterOutpu
     }
     
     func displayPokemonDetails(_ pokemonDetails: PokemonDetails) {
-        if let pokemonURL = pokemonDetails.imageURL,
-           let imageURL = URL(string: pokemonURL),
-           let imageData = try? Data(contentsOf: imageURL),
+        if let imageData = pokemonDetails.imageData,
            let image = UIImage(data: imageData) {
-            
             DispatchQueue.main.async { [weak self] in
                 self?.imageView.image = image
+                self?.nameLabel.text = "Name: \(pokemonDetails.name)"
+                self?.typesLabel.text = "Types: \(pokemonDetails.types)"
+                self?.weightLabel.text = "Weight: \(pokemonDetails.weight)"
+                self?.heightLabel.text = "Height: \(pokemonDetails.height)"
             }
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.nameLabel.text = pokemonDetails.name
-        }
-        
-        let typesText = pokemonDetails.types.joined(separator: ", ")
-        DispatchQueue.main.async { [weak self] in
-            self?.typesLabel.text = "Types: \(typesText)"
-        }
-        
-        let weightText = String(format: "Weight: %.1f kg", pokemonDetails.weight)
-        DispatchQueue.main.async { [weak self] in
-            self?.weightLabel.text = weightText
-        }
-        
-        let heightText = String(format: "Height: %.1f cm", pokemonDetails.height)
-        DispatchQueue.main.async { [weak self] in
-            self?.heightLabel.text = heightText
+        } else {
+            showError()
         }
     }
     

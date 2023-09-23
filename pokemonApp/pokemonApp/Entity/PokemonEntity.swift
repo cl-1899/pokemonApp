@@ -10,31 +10,26 @@ import Foundation
 struct Pokemon: Codable {
     let name: String
     let url: String
-    lazy var id: Int = {
-        return extractID(from: self.url)
-    }()
-    
-    private func extractID(from url: String) -> Int {
-        let parts = url.components(separatedBy: "/")
-        if let idString = parts.dropLast().last, let id = Int(idString) {
-            return id
-        } else {
-            return 0
-        }
-    }
+    let id: Int16
+}
+
+struct PokemonResponse: Codable {
+    let name: String
+    let url: String
 }
 
 struct PokemonListResponse: Codable {
-    let results: [Pokemon]
-    let next: URL?
+    let results: [PokemonResponse]
+    let next: String?
 }
 
 struct PokemonDetails: Codable {
+    let id: Int16
     let name: String
-    let imageURL: String?
-    let types: [String]
-    let weight: Double
-    let height: Double
+    let imageData: Data?
+    let types: String
+    let weight: String
+    let height: String
 }
 
 struct PokemonDetailsResponse: Codable {

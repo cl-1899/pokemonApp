@@ -23,9 +23,9 @@ class PokemonModulePresenter: PokemonModulePresenterInputProtocol, PokemonModule
     weak var view: PokemonModulePresenterOutputProtocol?
     var interactor: PokemonModuleInteractorInputProtocol!
     
-    private var pokemonId: Int?
+    private var pokemonId: Int16?
     
-    init(pokemonId: Int) {
+    init(pokemonId: Int16) {
         self.pokemonId = pokemonId
     }
     

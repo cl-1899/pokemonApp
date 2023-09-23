@@ -23,10 +23,16 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     
     private var pokemonList: [Pokemon] = []
     private var nextURL: URL?
+    private let coreDataManager = CoreDataManager()
     
     func fetchPokemonList() {
-        DispatchQueue.main.async { [weak self] in
-            self?.fetch()
+        if let cachedData = coreDataManager.fetchPokemonData() {
+            self.pokemonList = cachedData
+            self.presenter.didFetchPokemonList(pokemonList)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.fetch()
+            }
         }
     }
     
@@ -50,16 +56,31 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     private func handleSuccessResponse(data: Data) {
         do {
             let response = try JSONDecoder().decode(PokemonListResponse.self, from: data)
-            self.nextURL = response.next
+            if let nextURL = response.next {
+                self.nextURL = URL(string: nextURL)
+            }
             
             let newPokemonList = response.results.map { result in
-                return Pokemon(name: result.name, url: result.url)
+                let id = self.calculateIDFromURL(url: result.url)
+                return Pokemon(name: result.name, url: result.url, id: id)
             }
             
             self.pokemonList.append(contentsOf: newPokemonList)
             self.presenter.didFetchPokemonList(self.pokemonList)
+            
+            self.coreDataManager.savePokemonData(newPokemonList)
         } catch {
             self.presenter.onError()
+        }
+    }
+    
+    private func calculateIDFromURL(url: String) -> Int16 {
+        let parts = url.components(separatedBy: "/")
+        if let idString = parts.dropLast().last,
+           let id = Int16(idString) {
+            return id
+        } else {
+            return 0
         }
     }
 }

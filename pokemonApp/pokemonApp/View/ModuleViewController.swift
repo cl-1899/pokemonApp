@@ -20,6 +20,7 @@ class ModuleViewController: UIViewController, ModulePresenterOutputProtocol {
     }
     
     private func setupUI() {
+        view.backgroundColor = .white
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.dataSource = self
         tableView.delegate = self
@@ -53,7 +54,7 @@ extension ModuleViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedPokemon = pokemonList[indexPath.row]
+        let selectedPokemon = pokemonList[indexPath.row]
         let id = selectedPokemon.id
         presenter.didSelectPokemon(withID: id, from: self)
     }

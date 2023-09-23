@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ModuleRouterInputProtocol {
-    func navigateToPokemonDetails(withID id: Int, from view: ModulePresenterOutputProtocol?)
+    func navigateToPokemonDetails(withID id: Int16, from view: ModulePresenterOutputProtocol?)
 }
 
 class ModuleRouter: ModuleRouterInputProtocol {
@@ -34,7 +34,7 @@ class ModuleRouter: ModuleRouterInputProtocol {
         return navigationController
     }
     
-    func navigateToPokemonDetails(withID id: Int, from view: ModulePresenterOutputProtocol?) {
+    func navigateToPokemonDetails(withID id: Int16, from view: ModulePresenterOutputProtocol?) {
         let pokemonModuleViewController = PokemonModuleViewController()
         let presenter = PokemonModulePresenter(pokemonId: id)
         presenter.view = pokemonModuleViewController
