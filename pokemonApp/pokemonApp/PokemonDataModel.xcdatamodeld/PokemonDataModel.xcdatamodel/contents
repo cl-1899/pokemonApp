@@ -12,5 +12,12 @@
         <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="url" attributeType="String"/>
+        <relationship name="page" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PokemonListPageEntityData" inverseName="pokemon" inverseEntity="PokemonListPageEntityData"/>
+    </entity>
+    <entity name="PokemonListPageEntityData" representedClassName="PokemonListPageEntityData" syncable="YES" codeGenerationType="class">
+        <attribute name="nextUrl" optional="YES" attributeType="String"/>
+        <attribute name="page" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pokemonList" attributeType="Binary"/>
+        <relationship name="pokemon" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PokemonEntityData" inverseName="page" inverseEntity="PokemonEntityData"/>
     </entity>
 </model>

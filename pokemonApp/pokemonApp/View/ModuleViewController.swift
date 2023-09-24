@@ -58,4 +58,19 @@ extension ModuleViewController: UITableViewDataSource, UITableViewDelegate {
         let id = selectedPokemon.id
         presenter.didSelectPokemon(withID: id, from: self)
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let nextURL = presenter.interactor.nextURL else {
+            return
+        }
+        
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewheight = scrollView.frame.height
+        
+        if offsetY > contentHeight - scrollViewheight, !presenter.isLoadingNextPage {
+            presenter.isLoadingNextPage = true
+            presenter.loadNextPage()
+        }
+    }
 }

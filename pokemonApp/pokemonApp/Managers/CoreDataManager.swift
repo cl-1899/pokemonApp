@@ -22,44 +22,34 @@ public final class CoreDataManager: NSObject {
         return container
     }()
     
-    func savePokemonData(_ pokemonList: [Pokemon]) {
+    func savePokemonListPage(page: Int16, nextUrl: String?, pokemonList: [Pokemon]) {
         let context = persistentContainer.viewContext
         
-        let fetchRequest: NSFetchRequest<PokemonEntityData> = PokemonEntityData.fetchRequest()
         do {
-            let existingPokemonEntities = try context.fetch(fetchRequest)
-            for entity in existingPokemonEntities {
-                context.delete(entity)
-            }
-        } catch {
-            print("Error removing data from CoreData: \(error)")
-        }
-        
-        for pokemon in pokemonList {
-            let pokemonEntityData = PokemonEntityData(context: context)
-            pokemonEntityData.name = pokemon.name
-            pokemonEntityData.url = pokemon.url
-            pokemonEntityData.id = pokemon.id
-        }
-        
-        do {
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(pokemonList)
+            
+            let pageEntityData = PokemonListPageEntityData(context: context)
+            pageEntityData.page = page
+            pageEntityData.nextUrl = nextUrl
+            pageEntityData.pokemonList = jsonData
+            
             try context.save()
         } catch {
             print("Error saving data in CoreData: \(error)")
         }
     }
     
-    func fetchPokemonData() -> [Pokemon]? {
+    func fetchPokemonListPage(page: Int16) -> ([Pokemon], String?)? {
         let context = persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<PokemonEntityData> = PokemonEntityData.fetchRequest()
+        let fetchRequest: NSFetchRequest<PokemonListPageEntityData> = PokemonListPageEntityData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "page == %d", page)
         
         do {
-            let pokemonEntities = try context.fetch(fetchRequest)
-            let pokemonList = pokemonEntities.map { entity in
-                return Pokemon(name: entity.name ?? "", url: entity.url ?? "", id: entity.id)
-            }
-            if !pokemonList.isEmpty {
-                return pokemonList
+            if let pageEntity = try context.fetch(fetchRequest).first,
+               let jsonData = pageEntity.pokemonList {
+                let decodedPokemonList = try JSONDecoder().decode([Pokemon].self, from: jsonData)
+                return (decodedPokemonList, pageEntity.nextUrl ?? "")
             } else {
                 return nil
             }
@@ -76,21 +66,13 @@ public final class CoreDataManager: NSObject {
         fetchRequest.predicate = NSPredicate(format: "id == %d", id)
         
         do {
-            if let existingDetailsEntity = try context.fetch(fetchRequest).first {
-                existingDetailsEntity.name = pokemonDetails.name
-                existingDetailsEntity.imageData = pokemonDetails.imageData
-                existingDetailsEntity.types = pokemonDetails.types
-                existingDetailsEntity.weight = pokemonDetails.weight
-                existingDetailsEntity.height = pokemonDetails.height
-            } else {
-                let pokemonDetailsEntity = PokemonDetailsEntityData(context: context)
-                pokemonDetailsEntity.id = id
-                pokemonDetailsEntity.name = pokemonDetails.name
-                pokemonDetailsEntity.imageData = pokemonDetails.imageData
-                pokemonDetailsEntity.types = pokemonDetails.types
-                pokemonDetailsEntity.weight = pokemonDetails.weight
-                pokemonDetailsEntity.height = pokemonDetails.height
-            }
+            let pokemonDetailsEntity = PokemonDetailsEntityData(context: context)
+            pokemonDetailsEntity.id = id
+            pokemonDetailsEntity.name = pokemonDetails.name
+            pokemonDetailsEntity.imageData = pokemonDetails.imageData
+            pokemonDetailsEntity.types = pokemonDetails.types
+            pokemonDetailsEntity.weight = pokemonDetails.weight
+            pokemonDetailsEntity.height = pokemonDetails.height
             
             try context.save()
         } catch {
@@ -116,29 +98,28 @@ public final class CoreDataManager: NSObject {
                 )
                 return details
             } else {
-                print("No data yet")
+                return nil
             }
         } catch {
             print("Error fetching data from CoreData: \(error)")
+            return nil
         }
-        
-        return nil
     }
     
-    func deletePokemonData() {
+    func deleteAllPokemonListPages() {
         let context = persistentContainer.viewContext
         
-        let fetchRequest: NSFetchRequest<PokemonEntityData> = PokemonEntityData.fetchRequest()
+        let fetchRequest: NSFetchRequest<PokemonListPageEntityData> = PokemonListPageEntityData.fetchRequest()
         
         do {
-            let existingPokemonEntities = try context.fetch(fetchRequest)
-            for entity in existingPokemonEntities {
-                context.delete(entity)
+            let pokemonListPages = try context.fetch(fetchRequest)
+            for pageEntity in pokemonListPages {
+                context.delete(pageEntity)
             }
             
             try context.save()
         } catch {
-            print("Error removing data from CoreData: \(error)")
+            print("Error deleting data from CoreData: \(error)")
         }
     }
     
@@ -149,7 +130,6 @@ public final class CoreDataManager: NSObject {
         
         do {
             let allDetailsEntities = try context.fetch(fetchRequest)
-            
             for entity in allDetailsEntities {
                 context.delete(entity)
             }

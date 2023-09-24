@@ -11,6 +11,7 @@ protocol ModulePresenterInputProtocol {
     var view: ModulePresenterOutputProtocol? { get set }
     var interactor: ModuleInteractorInputProtocol! { get set }
     var router: ModuleRouterInputProtocol! { get set }
+    var isLoadingNextPage: Bool { get set }
     
     func viewDidLoad()
     func loadNextPage()
@@ -26,28 +27,30 @@ class ModulePresenter: ModulePresenterInputProtocol, ModuleInteractorOutputProto
     weak var view: ModulePresenterOutputProtocol?
     var interactor: ModuleInteractorInputProtocol!
     var router: ModuleRouterInputProtocol!
+    var isLoadingNextPage: Bool = false
     
     private var pokemonList: [Pokemon] = []
     
-    
     func viewDidLoad() {
-        interactor.fetchPokemonList()
+        self.interactor.fetchPokemonList()
     }
     
     func loadNextPage() {
-        interactor.fetchPokemonList()
+        self.interactor.fetchPokemonList()
     }
     
     func didSelectPokemon(withID id: Int16, from view: ModulePresenterOutputProtocol?) {
-        router?.navigateToPokemonDetails(withID: id, from: view)
+        self.router?.navigateToPokemonDetails(withID: id, from: view)
     }
     
     func didFetchPokemonList(_ pokemonList: [Pokemon]) {
         self.pokemonList = pokemonList
         self.view?.displayPokemonList(pokemonList)
+        self.isLoadingNextPage = false
     }
     
     func onError(_ alertType: AlertType) {
         self.view?.showError(alertType)
+        self.isLoadingNextPage = false
     }
 }

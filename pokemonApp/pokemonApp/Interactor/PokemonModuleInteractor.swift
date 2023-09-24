@@ -29,13 +29,13 @@ class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
         if let cachedDetails = coreDataManager.fetchPokemonDetails(for: id) {
             self.presenter.didFetchPokemonDetails(cachedDetails)
         } else {
-            self.fetch(for: id)
+            self.fetchFromNetwork(for: id)
         }
     }
     
-    private func fetch(for id: Int16) {
+    private func fetchFromNetwork(for id: Int16) {
         guard reachability.connection != .unavailable else {
-            presenter.onError(.noNetwork)
+            self.presenter.onError(.noNetwork)
             return
         }
         
@@ -45,7 +45,7 @@ class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
             return
         }
         
-        fetchApiClient(with: url, for: id)
+        self.fetchApiClient(with: url, for: id)
     }
     
     private func fetchApiClient(with url: URL, for id: Int16) {
@@ -77,19 +77,19 @@ class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
             }
             formattedTypes = String(formattedTypes.dropLast(2))
             
-            let weightText = String(format: "Weight: %.1f kg", response.weight)
-            let heightText = String(format: "Height: %.1f cm", response.height)
+            let weightText = String(format: "%.1f kg", response.weight)
+            let heightText = String(format: "%.1f cm", response.height)
             
             let pokemonDetaials = PokemonDetails(
                 id: id,
-                name: response.name,
+                name: response.name.capitalized,
                 imageData: imageData,
-                types: formattedTypes,
+                types: formattedTypes.capitalized,
                 weight: weightText,
                 height: heightText)
             self.presenter.didFetchPokemonDetails(pokemonDetaials)
             
-            coreDataManager.savePokemonDetails(pokemonDetaials, id: id)
+            self.coreDataManager.savePokemonDetails(pokemonDetaials, id: id)
         } catch {
             self.presenter.onError(.loadDataError)
         }

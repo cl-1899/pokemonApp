@@ -22,6 +22,7 @@
 		3B0497EB2AB9E9A3005EC6F0 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497EA2AB9E9A3005EC6F0 /* ApiClient.swift */; };
 		3B0497ED2AB9EAE1005EC6F0 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0497EC2AB9EAE1005EC6F0 /* ApiManager.swift */; };
 		3B1B88F02ABF6AAC00FEA7BE /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 3B1B88EF2ABF6AAC00FEA7BE /* Reachability */; };
+		3B9128772ABF945300C596BD /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9128762ABF945300C596BD /* SVProgressHUD */; };
 		3BEDA0242ABA381C00DF1F7A /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEDA0232ABA381C00DF1F7A /* AlertManager.swift */; };
 		3BEDA02C2ABA5F2C00DF1F7A /* pokemonAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEDA02B2ABA5F2C00DF1F7A /* pokemonAppTests.swift */; };
 		3BEDA0452ABF114E00DF1F7A /* PokemonDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3BEDA0432ABF114E00DF1F7A /* PokemonDataModel.xcdatamodeld */; };
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B9128772ABF945300C596BD /* SVProgressHUD in Frameworks */,
 				3B1B88F02ABF6AAC00FEA7BE /* Reachability in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +210,7 @@
 			name = pokemonApp;
 			packageProductDependencies = (
 				3B1B88EF2ABF6AAC00FEA7BE /* Reachability */,
+				3B9128762ABF945300C596BD /* SVProgressHUD */,
 			);
 			productName = pokemonApp;
 			productReference = 3B0497B22AB70722005EC6F0 /* pokemonApp.app */;
@@ -261,6 +264,7 @@
 			mainGroup = 3B0497A92AB70722005EC6F0;
 			packageReferences = (
 				3B1B88EE2ABF6AAC00FEA7BE /* XCRemoteSwiftPackageReference "Reachability" */,
+				3B9128752ABF945300C596BD /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 			);
 			productRefGroup = 3B0497B32AB70722005EC6F0 /* Products */;
 			projectDirPath = "";
@@ -591,6 +595,14 @@
 				kind = branch;
 			};
 		};
+		3B9128752ABF945300C596BD /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/littleigloo/SVProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -598,6 +610,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B1B88EE2ABF6AAC00FEA7BE /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
+		};
+		3B9128762ABF945300C596BD /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B9128752ABF945300C596BD /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 

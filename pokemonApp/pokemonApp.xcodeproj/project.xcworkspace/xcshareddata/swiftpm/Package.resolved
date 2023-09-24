@@ -8,6 +8,15 @@
         "branch" : "master",
         "revision" : "a81b7367f2c46875f29577e03a60c39cdfad0c8d"
       }
+    },
+    {
+      "identity" : "svprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/littleigloo/SVProgressHUD",
+      "state" : {
+        "revision" : "3580cb55f351d83f861f52362aa38305f663f88d",
+        "version" : "1.0.0"
+      }
     }
   ],
   "version" : 2
