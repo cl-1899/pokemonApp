@@ -26,6 +26,7 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     private var pokemonList: [Pokemon] = []
     private var currentPage: Int16 = 0
     private var nextPage: Int16 = 1
+    private var pokemonCounter: Int = 1
     private let coreDataManager = CoreDataManager.shared
     private let reachability = try! Reachability()
     private let pokemonsURL = ApiManager.pokemonsURL
@@ -38,9 +39,10 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
             } else {
                 self.nextURL = nil
             }
-            
+
             self.currentPage += 1
             self.nextPage += 1
+            self.pokemonCounter += newPokemonList.count
             
             self.pokemonList.append(contentsOf: newPokemonList)
             self.presenter.didFetchPokemonList(self.pokemonList)
@@ -88,7 +90,9 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
             
             let newPokemonList = response.results.map { result in
                 let id = self.calculateIDFromURL(url: result.url)
-                return Pokemon(name: "\(id). \(result.name.capitalized)", url: result.url, id: id)
+                let pokemonName = "\(self.pokemonCounter). \(result.name.capitalized)"
+                self.pokemonCounter += 1
+                return Pokemon(name: pokemonName, url: result.url, id: id)
             }
             
             self.currentPage += 1
