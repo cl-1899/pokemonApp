@@ -57,10 +57,11 @@ extension ModuleViewController: UITableViewDataSource, UITableViewDelegate {
         let selectedPokemon = pokemonList[indexPath.row]
         let id = selectedPokemon.id
         presenter.didSelectPokemon(withID: id, from: self)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let nextURL = presenter.interactor.nextURL else {
+        guard let _ = presenter.interactor.nextURL else {
             return
         }
         
