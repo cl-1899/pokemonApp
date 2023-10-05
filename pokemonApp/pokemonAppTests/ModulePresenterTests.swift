@@ -14,7 +14,7 @@ final class ModulePresenterTests: XCTestCase {
     var mockRouter: MockModuleRouter!
     var mockView: MockModuleView!
 
-    override func setUpWithError() throws {
+    override func setUp() {
         mockInteractor = MockModuleInteractor()
         mockRouter = MockModuleRouter()
         mockView = MockModuleView()
@@ -24,13 +24,13 @@ final class ModulePresenterTests: XCTestCase {
         presenter.view = mockView
     }
     
-    override func tearDownWithError() throws {
+    override func tearDown() {
         mockView = nil
         mockInteractor = nil
         mockRouter = nil
         presenter = nil
     }
-
+    
     func testViewDidLoad() {
         presenter.viewDidLoad()
         XCTAssertTrue(mockInteractor.fetchPokemonListCalled)

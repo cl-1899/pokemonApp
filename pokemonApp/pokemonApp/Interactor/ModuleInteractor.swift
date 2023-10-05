@@ -28,7 +28,7 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     private var nextPage: Int16 = 1
     private var pokemonCounter: Int = 1
     private let coreDataManager = CoreDataManager.shared
-    private let reachability = try! Reachability()
+    private let reachability = try? Reachability()
     private let pokemonsURL = ApiManager.pokemonsURL
     private var shouldShowNoNetworkAlert = true
     
@@ -52,7 +52,7 @@ class ModuleInteractor: ModuleInteractorInputProtocol {
     }
 
     private func fetchFromNetwork() {
-        guard reachability.connection != .unavailable else {
+        guard reachability?.connection != .unavailable else {
             if self.shouldShowNoNetworkAlert {
                 self.presenter.onError(.noNetwork)
                 self.shouldShowNoNetworkAlert = false
