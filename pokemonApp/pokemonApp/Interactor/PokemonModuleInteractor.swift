@@ -23,7 +23,7 @@ class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
     
     private let pokemonsURL = ApiManager.pokemonsURL
     private let coreDataManager = CoreDataManager.shared
-    private let reachability = try! Reachability()
+    private let reachability = try? Reachability()
     
     func fetchPokemonDetails(with id: Int16) {
         if let cachedDetails = coreDataManager.fetchPokemonDetails(for: id) {
@@ -34,7 +34,7 @@ class PokemonModuleInteractor: PokemonModuleInteractorInputProtocol {
     }
     
     private func fetchFromNetwork(for id: Int16) {
-        guard reachability.connection != .unavailable else {
+        guard reachability?.connection != .unavailable else {
             self.presenter.onError(.noNetwork)
             return
         }
