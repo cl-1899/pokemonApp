@@ -33,6 +33,6 @@ PokemonApp - это приложение для просмотра информ�
 - CoreData
 - UnitTests
 
-## Скриншоты
+## Демонстрация работы приложения
 
-![Pagination](https://github.com/cl-1899/pokemonApp/blob/main/Screenshots/pagination.gif)  |  ![Pokemon Data](https://github.com/cl-1899/pokemonApp/blob/main/Screenshots/pokemonData.gif)  |  ![Network Error](https://github.com/cl-1899/pokemonApp/blob/main/Screenshots/networkError.gif)
+![Pagination](https://github.com/cl-1899/pokemonApp/blob/main/Screenshots/pagination.gif) | ![Pokemon Data](https://github.com/cl-1899/pokemonApp/blob/main/Screenshots/pokemonData.gif)  |  ![Network Error](https://github.com/cl-1899/pokemonApp/blob/main/Screenshots/networkError.gif)
